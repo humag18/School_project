@@ -13,8 +13,9 @@ class Player:
         return self.life > 0
 
     def get_hit(self, dammage):
-        life = Player.is_alive
-        if life == True:
+        print("classe Player methode get_hit")
+        
+        if Player.is_alive== True:
             self.life -= dammage
         else:
             print("End Game")
@@ -167,6 +168,7 @@ class Character:
         #TODO
     
     def get_hit(self, damages):
+        print("class charcter methode get_hit")
         self.life -= damages
         if self.life <= 0:
             self.player.team.remove(self)
@@ -174,9 +176,11 @@ class Character:
         return 0
 
     def atac(self):
-        if self.position[1] == self.game.nb_columns and self.direction ==1 \
-                or self.position[1] == 0 and self.direction == -1:
-            self.enemy.life -= self.strength
+        if self.position[1] == self.game.nb_columns-1 and self.direction ==1 or self.position[1] == 0 and self.direction == -1:
+            print("rentré dans atac")
+            # self.enemy.life -= self.strength
+            Player.get_hit(self, self.strength)
+            """Dans l'object character il peu retrouver l'enemi qui a une fct get_hit"""
         else:
             for character in self.enemy.team:
                 if character.position == (self.position[0], self.position[1] + self.direction):
@@ -194,8 +198,8 @@ class Character:
             return "\033[91m {}\033[00m".format(txt)
 
     def __str__(self):
-        #return f'Framer({self.price}$) -life : {self.life} -strength : {self.strength}'
-        return self
+        return f'Framer({self.price}$) -life : {self.life} -strength : {self.strength}'
+        # return self
 
 class Fighter(Character):
     base_price = 2
