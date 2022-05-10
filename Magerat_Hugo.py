@@ -1,4 +1,4 @@
-class Player:
+class Player: 
 
     def __init__(self, name, life, monney, direction = None, game = None, team = None):
         self.name = name
@@ -35,7 +35,7 @@ class Player:
                     if self.direction == +1:
                         column = 0
                     else:
-                        column = self.Game.nb_columns-1
+                        column = self.game.nb_columns-1
                     classes[n_choice](self, (int(line), column))
 
                 
@@ -81,11 +81,10 @@ class Game:
         for line in range(self.nb_lines):
             for column in range(self.nb_columns):
                 board.append((line, column))
-            if position in board:
-                if self.get_character(position) is None:
-                    character.position = position
-                    return True
-                    #TODO
+        if position in board:
+            if self.get_character(position) is None:
+                character.position = position
+                return True
             return False
 
     def draw(self):
@@ -94,7 +93,7 @@ class Game:
             for character in player:
                 charac_list.append(character.position)
         print (charac_list)
-        print(f"{self.players[0].life:<4}{''*self.nb_columns}{self.players[1].life:>4}")
+        print(f"{self.players[0].life:<4}{'  '*self.nb_columns}{self.players[1].life:>4}")
         print("----"+self.nb_columns*"--"+"----")
 
         for line in range(self.nb_lines):
@@ -106,11 +105,12 @@ class Game:
                             if character.position == (line, column):
                                 print(f"{character.design}", end="")
                 else:
-                    print(end = "")
+                    print(".", end = " ")
             print(f"|{line:>2}|")
 
-            print("----"+self.nb_columns*"--"+"----")
-            print(f"{self.players[0].money:>3}${''*self.nb_columns}${self.player[1].money:>3}")
+        print("----"+self.nb_columns*"--"+"----")
+
+        print(f"{self.players[0].monney:>3}${'  '*self.nb_columns}${self.players[1].monney:>3}")
     
     def play_turn(self):
         for player in self.all_characters:
@@ -162,16 +162,15 @@ class Character:
             return self.color("<")
 
     def move(self):
-        new_pos = self.position[0], self.position[1] + self.direction
-        self.game.place_character(new_pos)
+        new_pos = (self.position[0], self.position[1] + self.direction)
+        self.game.place_character(self, new_pos)
         #TODO
     
     def get_hit(self, damages):
         self.life -= damages
         if self.life <= 0:
-            self.player.team.remove()
+            self.player.team.remove(self)
             return self.price/2
-
         return 0
 
     def atac(self):
@@ -180,8 +179,8 @@ class Character:
             self.enemy.life -= self.strength
         else:
             for character in self.enemy.team:
-                if character.position == (self.position[0], self.position[1]) + self.direction:
-                    self.player.money += character.get_hit(self.strength)
+                if character.position == (self.position[0], self.position[1] + self.direction):
+                    self.player.monney += character.get_hit(self.strength)
         #TODO
 
     def play_turn(self):
@@ -194,9 +193,9 @@ class Character:
         else:
             return "\033[91m {}\033[00m".format(txt)
 
-    def __str__(self) -> str:
-        return f'Framer({self.price}$) -life : {self.life} -strength : {self.strength}'
-        #TODO
+    def __str__(self):
+        #return f'Framer({self.price}$) -life : {self.life} -strength : {self.strength}'
+        return self
 
 class Fighter(Character):
     base_price = 2
@@ -204,9 +203,12 @@ class Fighter(Character):
 
     @property
     def design(self):
-        return self.color("F")
+        if self.direction == 1:
+            return self.color("F")
+        else:
+            return self.color("F")
 
-    def __str__(self) -> str:
+    def __str__(self):
         return f"Fighter ({self.price}$) -life : {self.life} -strength : {self.strength}"
 
 class Tank(Character):
@@ -216,9 +218,12 @@ class Tank(Character):
 
     @property
     def design(self):
-        return self.color("T")
+        if self.direction == 1:
+            return self.color("T")
+        else:
+            return self.color("T")
 
-    def __str__(self) -> str:
+    def __str__(self):
         return f"Tank ({self.price}$) -life : {self.life} - strength : {self.strength}"
 
 if __name__ == "__main__":
