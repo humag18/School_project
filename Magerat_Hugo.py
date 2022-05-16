@@ -1,3 +1,6 @@
+from ast import IfExp
+
+
 class Player: 
 
     def __init__(self, name, life, monney, direction = None, game = None, team = None):
@@ -13,12 +16,7 @@ class Player:
         return self.life > 0
 
     def get_hit(self, dammage):
-        print("classe Player methode get_hit")
-        
-        if Player.is_alive== True:
-            self.life -= dammage
-        else:
-            print("End Game")
+        self.life -= dammage
 
     def new_character(self):
         classes = (Character, Fighter, Tank)
@@ -89,6 +87,7 @@ class Game:
             return False
 
     def draw(self):
+        # print (self.players[0].life)
         charac_list = []
         for player in self.all_characters:
             for character in player:
@@ -137,9 +136,10 @@ class Character:
         self.life = self.base_life
         self.strength = self.base_strength
         self.price = self.base_price
+        self.turn = 1
 
-        ok = self.game.place_character(self, position)
-        if ok is True:
+        x = self.game.place_character(self, position)
+        if x is True:
             self.player.team.append(self)
             self.player.monney -= self.price
 
@@ -153,7 +153,10 @@ class Character:
 
     @property
     def enemy(self):
-        return self.game.oponent
+        if self.player == self.game.current_player:
+            return self.game.oponent
+        else:
+            return self.game.current_player
 
     @property
     def design(self):
@@ -176,16 +179,16 @@ class Character:
         return 0
 
     def atac(self):
-        if self.position[1] == self.game.nb_columns-1 and self.direction ==1 or self.position[1] == 0 and self.direction == -1:
-            print("rentré dans atac")
-            # self.enemy.life -= self.strength
-            Player.get_hit(self, self.strength)
-            """Dans l'object character il peu retrouver l'enemi qui a une fct get_hit"""
+        if self.position[1] == self.game.nb_columns -1 and self.direction == 1:
+            self.enemy.get_hit(self.strength)
+
+        elif self.position[1] == 0 and self.direction == -1:
+            self.enemy.get_hit(self.strength)
+            
         else:
             for character in self.enemy.team:
                 if character.position == (self.position[0], self.position[1] + self.direction):
                     self.player.monney += character.get_hit(self.strength)
-        #TODO
 
     def play_turn(self):
         self.move()
@@ -218,7 +221,7 @@ class Fighter(Character):
 class Tank(Character):
     base_price = 3
     base_life = 10
-    turn = 1
+    # turn = 1
 
     @property
     def design(self):
@@ -230,11 +233,18 @@ class Tank(Character):
     def __str__(self):
         return f"Tank ({self.price}$) -life : {self.life} - strength : {self.strength}"
 
+    def move(self):
+        if self.turn %2 == 0:
+            new_pos = (self.position[0], self.position[1] + self.direction)
+            self.game.place_character(self, new_pos)
+        self.turn += 1
+            # print (Tank.turn)
+
 if __name__ == "__main__":
     print("Let's Play !!!")
     name1 = input("Name of player 1 : ")
     name2 = input("Name of player 2 : ")
-    p1 = Player(name1, 10, 10)
-    p2 = Player(name2, 10, 10)
+    p1 = Player(name = name1, life = int(10), monney = int(10))
+    p2 = Player(name = name2, life = 10, monney = 10)
     g = Game(p1, p2)
     g.play()
