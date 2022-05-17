@@ -1,4 +1,4 @@
-from ast import IfExp
+# from ast import IfExp
 
 
 class Player: 
@@ -37,9 +37,6 @@ class Player:
                         column = self.game.nb_columns-1
                     classes[n_choice](self, (int(line), column))
 
-                
-                
-                
 
 class Game:
 
@@ -87,7 +84,6 @@ class Game:
             return False
 
     def draw(self):
-        # print (self.players[0].life)
         charac_list = []
         for player in self.all_characters:
             for character in player:
@@ -171,7 +167,7 @@ class Character:
         #TODO
     
     def get_hit(self, damages):
-        print("class charcter methode get_hit")
+        # print("class charcter methode get_hit")
         self.life -= damages
         if self.life <= 0:
             self.player.team.remove(self)
@@ -221,7 +217,6 @@ class Fighter(Character):
 class Tank(Character):
     base_price = 3
     base_life = 10
-    # turn = 1
 
     @property
     def design(self):
@@ -238,9 +233,24 @@ class Tank(Character):
             new_pos = (self.position[0], self.position[1] + self.direction)
             self.game.place_character(self, new_pos)
         self.turn += 1
-            # print (Tank.turn)
+
+class Mage(Character):
+    base_price = 4
+    base_life = 4
+    base_strength = 4
+
+    @property
+    def design(self):
+        if self.direction == 1:
+            return self.color("M")
+        else:
+            return self.color("M")
+
+    def __str__(self):
+        return f"Mage ({self.position[0]}$)"
 
 if __name__ == "__main__":
+    print ("")
     print("Let's Play !!!")
     name1 = input("Name of player 1 : ")
     name2 = input("Name of player 2 : ")
