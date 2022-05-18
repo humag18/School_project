@@ -1,6 +1,10 @@
 # from ast import IfExp
 
 
+from itertools import count
+from unicodedata import name
+
+
 class Player: 
 
     def __init__(self, name, life, monney, direction = None, game = None, team = None):
@@ -19,27 +23,44 @@ class Player:
         self.life -= dammage
 
     def new_character(self):
-        classes = (Character, Fighter, Tank)
-        line = input(f"{self.name}: Wich line would you place the new one"
-        f"(0-{self.game.nb_lines-1}) ? (enter if none) : ")
-        if line != "":
-            if 0 <= int(line) <= self.game.nb_lines-1:
-                choices = input(f"wich class would you want to invoke : (0 - {len(classes)-1})"
-                            f"(enter to show price and order) ")
-                if choices == "":
-                    choices = input(f"Enter your desired invocation : \n0- Framer : {Character.base_price}$"
-                    f"\n1- Fighter : {Fighter.base_price}$ \n2- Tank : {Tank.base_price}$\n")
-                n_choice = int(choices)
-                if 0<= n_choice <= len(classes) - 1 and self.monney >= classes[int(choices)].base_price:
-                    if self.direction == +1:
-                        column = 0
-                    else:
-                        column = self.game.nb_columns-1
-                    classes[n_choice](self, (int(line), column))
+        classes = (Character, Fighter, Tank, Mage)
+        if self.name != "bot":
+            print(f"{self.name}: Wich line would you place the new one (0-{self.game.nb_lines-1}) ? (enter if none)\n)")
+            try:
+                line = int(input(">> "))
+            except:
+                print("Type error: Try again withn an integer type...")
+            if line != "":
+                if 0 <= int(line) <= self.game.nb_lines-1:
+                    choices = input(f"wich class would you want to invoke : (0 - {len(classes)-1})"
+                                f"(enter to show price and order)\n>> ")
+                    if choices == "":
+                        choices = input(f"Enter your desired invocation : \n0- Framer : {Character.base_price}$"
+                        f"\n1- Fighter : {Fighter.base_price}$ \n2- Tank : {Tank.base_price}$\n3- Magician : {Mage.base_price}$\n>> ")
+                    n_choice = int(choices)
+                    if 0<= n_choice <= len(classes) - 1 and self.monney >= classes[int(choices)].base_price:
+                        if self.direction == +1:
+                            column = 0
+                        else:
+                            column = self.game.nb_columns-1
+                        classes[n_choice](self, (int(line), column))
+        elif self.name == "bot_nul":
+            print("It's the bot's turn...")
+            if choices == 0:
+                bot_choices = 2
+            elif choices == 1:
+                bot_choices = 1
+            elif choices == 2:
+                bot_choices = 2
+            elif choices == 3:
+                bot_choices = 3
+            
+    
+    def add_monney(self):
+        self.monney+=1
 
 
 class Game:
-
     def __init__(self, player0, player1, nb_line = 6, nb_column = 15):
         self.players = [player0, player1]
         self.nb_lines = nb_line
@@ -88,7 +109,6 @@ class Game:
         for player in self.all_characters:
             for character in player:
                 charac_list.append(character.position)
-        print (charac_list)
         print(f"{self.players[0].life:<4}{'  '*self.nb_columns}{self.players[1].life:>4}")
         print("----"+self.nb_columns*"--"+"----")
 
@@ -109,16 +129,19 @@ class Game:
         print(f"{self.players[0].monney:>3}${'  '*self.nb_columns}${self.players[1].monney:>3}")
     
     def play_turn(self):
-        for player in self.all_characters:
-            for character in player:
-                character.play_turn()
-        self.current_player.new_character()
-        self.draw()
+        if self.current_player[name] != "bot":
+            for player in self.all_characters:
+                for character in player:
+                    character.play_turn()
+            self.current_player.new_character()
+            self.draw()
 
     def play(self):
         while self.current_player.life > 0:
             self.play_turn()
             self.player_turn += self.current_player.direction
+            self.current_player.add_monney()
+            
         #TODO
     
 class Character:
@@ -177,9 +200,11 @@ class Character:
     def atac(self):
         if self.position[1] == self.game.nb_columns -1 and self.direction == 1:
             self.enemy.get_hit(self.strength)
+            self.player.team.remove()
 
         elif self.position[1] == 0 and self.direction == -1:
             self.enemy.get_hit(self.strength)
+            self.player.team.remove()
             
         else:
             for character in self.enemy.team:
@@ -226,7 +251,7 @@ class Tank(Character):
             return self.color("T")
 
     def __str__(self):
-        return f"Tank ({self.price}$) -life : {self.life} - strength : {self.strength}"
+        return f"Tank ({self.price}$) -life : {self.life} -strength : {self.strength}"
 
     def move(self):
         if self.turn %2 == 0:
@@ -246,15 +271,99 @@ class Mage(Character):
         else:
             return self.color("M")
 
+    def atac(self):
+        if self.position[1] == self.game.nb_columns -2 and self.direction == 1:
+            self.enemy.get_hit(self.strength)
+
+        elif self.position[1] == 1 and self.direction == -1:
+            self.enemy.get_hit(self.strength)
+            
+        else:
+            for character in self.enemy.team:
+                if character.position == (self.position[0], self.position[1] + self.direction):
+                    self.player.monney += character.get_hit(self.strength)
+
+
     def __str__(self):
-        return f"Mage ({self.position[0]}$)"
+        return f"Mage ({self.position[0]}$) -life : {self.life} -strength : {self.strength}"
+
+def menu():
+    print("#--------------------------------------------#")
+    print("#             Welcome to the game            #")
+    print("#--------------------------------------------#")
+    print("#          Chose your gaming setting         #")
+    print("#                [0] 1 VS 1                  #")
+    print("#                [1] 1 VS bot                #")
+    print("#                [2] quit                    #")
+    print("#                                            #")
+    print("#--------------------------------------------#")
+
+def game_mode():
+    print("#--------------------------------------------#")
+    print("#                                            #")
+    print("#        Chose your game mode :              #")
+    print("#            [0] Easy (PV : 20)              #")
+    print("#            [1] Normal (PV : 10)            #")
+    print("#            [2] Hardcore (PV : 5)           #")
+    print("#            [3] Ultra Hardcore (PV : 1)     #")
+    print("#                                            #")
+    print("#--------------------------------------------#")
 
 if __name__ == "__main__":
-    print ("")
-    print("Let's Play !!!")
-    name1 = input("Name of player 1 : ")
-    name2 = input("Name of player 2 : ")
-    p1 = Player(name = name1, life = int(10), monney = int(10))
-    p2 = Player(name = name2, life = 10, monney = 10)
+    setting = menu()
+    choice = int(input(">> "))
+    if choice == 0:
+        name1 = input("Player 1's name >> ")
+        name2 = input("Player 2's name >> ")
+        setting = game_mode()
+        while True:
+            try:                    
+                life = int(input(">> "))
+                break
+            except ValueError:
+                print("Oops! That not a valid number try again...")
+
+        if life == 0:
+            print("The winner will recived 1 points")
+            life = 20
+        elif life == 1:
+            print("The winner will recived 5 points")
+            life = 10
+        elif life == 2:
+            print("The winner will recived 10 points")
+            life = 5
+        elif life == 3:
+            print("The winner will recived 20 points")
+            life = 1
+    elif choice == 1:
+        while True:
+            try:                    
+                life = int(input(">> "))
+                break
+            except ValueError:
+                print("Oops! That not a valid type try again...")
+        name1 = input("Player's name >> ")
+        name2 = "bot"
+        setting = game_mode()
+        if life == 0:
+            print("If you win, you will recived 1 points")
+            name2 = "bot_nul"
+            life = 20
+        elif life == 1:
+            print("If you win, you will recived 5 points")
+            name2 = "bot_nul"
+            life = 10
+        elif life == 2:
+            print("If you win, you will recived 10 points")
+            name2 = "bot"
+            life = 5
+        elif life == 3:
+            print("If you win, you will recived 20 points")
+            name2 = "bot"
+            life = 1
+    elif choice >= 2:
+        exit()
+    p1 = Player(name = name1, life = life, monney = 10)
+    p2 = Player(name = name2, life = life, monney = 10)
     g = Game(p1, p2)
     g.play()
