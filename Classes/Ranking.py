@@ -1,7 +1,5 @@
 class Ranking():
     rank =[]
-    def __init__(self, winner):
-        self.winner = winner
 
     def ranking_showing(self):
         try:
@@ -19,5 +17,16 @@ class Ranking():
             print("Oops! the file doesn't exist.\nWe are creating a new one...")
             with open('../ranking.txt', 'x') as f:
                 print("The file as been created!")
+
+    def new_score(self, winner, pts):
+        if not winner in Ranking.rank:
+            player = (winner, pts)
+            Ranking.rank.append(player)
+        else:
+            for i in Ranking.rank:
+                if i[0]==winner:
+                    i[1] += pts
+                
+
 
     

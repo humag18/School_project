@@ -24,7 +24,7 @@ class Player:
 
     def new_character(self):
         classes = (Character, Fighter, Tank, Archer)
-        if self.name != "bot" and self.name != "bot_nul":
+        if self.name != "bot":
             print(f"{self.name}: Wich line would you place the new one (0-{self.game.nb_lines-1}) ? (enter if none)")
             line = input(">> ")
             if line != "":
@@ -41,7 +41,7 @@ class Player:
                         else:
                             column = self.game.nb_columns-1
                         classes[self.n_choice](self, (int(line), column))
-        elif self.name == "bot_nul":
+        elif self.name == "bot":
             print("It's the bot's turn...")
             bot_choices = randint(0, len(classes)-1)
             if self.monney >= classes[int(bot_choices)].base_price:
