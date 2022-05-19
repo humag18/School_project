@@ -6,9 +6,6 @@ class Archer(Character):
 
     @property
     def design(self):
-        if self.direction == 1:
-            return self.color("M")
-        else:
             return self.color("M")
 
     def atac(self):

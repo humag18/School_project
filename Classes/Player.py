@@ -2,6 +2,7 @@ from Classes.character.Character import Character
 from Classes.character.Fighter import Fighter
 from Classes.character.Tank import Tank
 from Classes.character.Archer import Archer
+from Classes.character.Goblins import Goblins
 from random import *
 class Player: 
 
@@ -23,7 +24,7 @@ class Player:
         self.life -= dammage
 
     def new_character(self):
-        classes = (Character, Fighter, Tank, Archer)
+        classes = (Character, Fighter, Tank, Archer, Goblins)
         if self.name != "bot":
             print(f"{self.name}: Wich line would you place the new one (0-{self.game.nb_lines-1}) ? (enter if none)")
             line = input(">> ")
@@ -33,7 +34,7 @@ class Player:
                                 f"(enter to show price and order)\n>> ")
                     if choices == "":
                         choices = input(f"Enter your desired invocation : \n0- Framer : {Character.base_price}$"
-                        f"\n1- Fighter : {Fighter.base_price}$ \n2- Tank : {Tank.base_price}$\n3- Magician : {Archer.base_price}$\n>> ")
+                        f"\n1- Fighter : {Fighter.base_price}$ \n2- Tank : {Tank.base_price}$\n3- Archer : {Archer.base_price}$\n4- Goblins : {Goblins.base_price} \n>> ")
                     self.n_choice = int(choices)
                     if 0<= self.n_choice <= len(classes) - 1 and self.monney >= classes[int(choices)].base_price:
                         if self.direction == +1:

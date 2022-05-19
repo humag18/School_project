@@ -5,10 +5,7 @@ class Tank(Character):
 
     @property
     def design(self):
-        if self.direction == 1:
-            return self.color("T")
-        else:
-            return self.color("T")
+        return self.color("T")
 
     def __str__(self):
         return f"Tank ({self.price}$) -life : {self.life} -strength : {self.strength}"
