@@ -1,4 +1,4 @@
-from Character import Character
+from Classes.character.Character import Character
 class Fighter(Character):
     base_price = 2
     base_strength = 2

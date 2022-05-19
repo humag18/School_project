@@ -1,28 +1,7 @@
 from random import *
-from Player import Player
-from Game import Game
-def menu():
-    print("#--------------------------------------------#")
-    print("#             Welcome to the game            #")
-    print("#--------------------------------------------#")
-    print("#          Chose your gaming setting         #")
-    print("#                [0] 1 VS 1                  #")
-    print("#                [1] 1 VS bot                #")
-    print("#                [2] Show rank               #")
-    print("#                [2] quit                    #")
-    print("#                                            #")
-    print("#--------------------------------------------#")
-
-def game_mode():
-    print("#--------------------------------------------#")
-    print("#                                            #")
-    print("#        Chose your game mode :              #")
-    print("#            [0] Easy (PV : 20)              #")
-    print("#            [1] Normal (PV : 10)            #")
-    print("#            [2] Hardcore (PV : 5)           #")
-    print("#            [3] Ultra Hardcore (PV : 1)     #")
-    print("#                                            #")
-    print("#--------------------------------------------#")
+from Classes.Player import Player
+from Classes.Game import Game
+from Function.Function_menu import *
 
 if __name__ == "__main__":
     setting = menu()

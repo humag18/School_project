@@ -1,21 +1,26 @@
-class Player:
-    def __init__(self, life):
-        self.life = life
+def atac_normal(self):
+        if self.position[1] == self.game.nb_columns -1 and self.direction == 1:
+            self.enemy.get_hit(self.strength)
+            self.player.team.remove(self)
 
-    # @prerty
-    def is_alive(self):
-        return self.life > 0
+        elif self.position[1] == 0 and self.direction == -1:
+            self.enemy.get_hit(self.strength)
+            self.player.team.remove(self)
+            
+        else:
+            for character in self.enemy.team:
+                if character.position == (self.position[0], self.position[1] + self.direction):
+                    self.player.monney += character.get_hit(self.strength)
 
-    def hit(self, dammage):
-        print("coco")
-        life = Player.is_alive(self)
-        print (life,"YO")
-        if life == True:
-            self.life -= dammage
-            print(self.life)
-        
-        elif life == "False":
-            print("end game")
+def atac(self):
+        if self.position[1] == self.game.nb_columns -2 and self.direction == 1:
+            self.enemy.get_hit(self.strength)
 
-hugo = Player(12)
-hugo.hit(1)
+        elif self.position[1] == 1 and self.direction == -1:
+            self.enemy.get_hit(self.strength)
+            
+            
+        else:
+            for character in self.enemy.team:
+                if character.position == (self.position[0], self.position[1] + self.direction):
+                    self.player.monney += character.get_hit(self.strength)

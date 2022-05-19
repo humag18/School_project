@@ -1,7 +1,7 @@
-from Character import Character
-from Fighter import Fighter
-from Tank import Tank
-from Mage import Mage
+from Classes.character.Character import Character
+from Classes.character.Fighter import Fighter
+from Classes.character.Tank import Tank
+from Classes.character.Archer import Archer
 from random import *
 class Player: 
 
@@ -23,7 +23,7 @@ class Player:
         self.life -= dammage
 
     def new_character(self):
-        classes = (Character, Fighter, Tank, Mage)
+        classes = (Character, Fighter, Tank, Archer)
         if self.name != "bot" and self.name != "bot_nul":
             print(f"{self.name}: Wich line would you place the new one (0-{self.game.nb_lines-1}) ? (enter if none)")
             line = input(">> ")
@@ -33,7 +33,7 @@ class Player:
                                 f"(enter to show price and order)\n>> ")
                     if choices == "":
                         choices = input(f"Enter your desired invocation : \n0- Framer : {Character.base_price}$"
-                        f"\n1- Fighter : {Fighter.base_price}$ \n2- Tank : {Tank.base_price}$\n3- Magician : {Mage.base_price}$\n>> ")
+                        f"\n1- Fighter : {Fighter.base_price}$ \n2- Tank : {Tank.base_price}$\n3- Magician : {Archer.base_price}$\n>> ")
                     self.n_choice = int(choices)
                     if 0<= self.n_choice <= len(classes) - 1 and self.monney >= classes[int(choices)].base_price:
                         if self.direction == +1:
@@ -44,9 +44,10 @@ class Player:
         elif self.name == "bot_nul":
             print("It's the bot's turn...")
             bot_choices = randint(0, len(classes)-1)
-            line = randint(0, self.game.nb_lines-1)
-            column = self.game.nb_columns-1
-            classes[bot_choices](self, (int(line), column))
+            if self.monney >= classes[int(bot_choices)].base_price:
+                line = randint(0, self.game.nb_lines-1)
+                column = self.game.nb_columns-1
+                classes[bot_choices](self, (int(line), column))
             
     
     def add_monney(self):

@@ -1,5 +1,5 @@
-from Character import Character
-class Mage(Character):
+from Classes.character.Character import Character
+class Archer(Character):
     base_price = 4
     base_life = 2
     base_strength = 4

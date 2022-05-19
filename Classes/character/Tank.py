@@ -1,4 +1,4 @@
-from Character import Character
+from Classes.character.Character import Character
 class Tank(Character):
     base_price = 3
     base_life = 10
