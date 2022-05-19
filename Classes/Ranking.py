@@ -22,10 +22,15 @@ class Ranking():
         if not winner in Ranking.rank:
             player = (winner, pts)
             Ranking.rank.append(player)
+            print(f"Now {winner} you have {pts} points")
         else:
             for i in Ranking.rank:
                 if i[0]==winner:
                     i[1] += pts
+                    print(f"Now {i[0]} you have {i[1]} points")
+
+        f = open('ranking.txt', 'w+')
+
                 
 
 

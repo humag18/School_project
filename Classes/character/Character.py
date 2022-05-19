@@ -41,10 +41,8 @@ class Character:
     def move(self):
         new_pos = (self.position[0], self.position[1] + self.direction)
         self.game.place_character(self, new_pos)
-        #TODO
     
     def get_hit(self, damages):
-        # print("class charcter methode get_hit")
         self.life -= damages
         if self.life <= 0:
             self.player.team.remove(self)

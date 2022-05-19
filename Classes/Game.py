@@ -1,5 +1,6 @@
+from Classes.Ranking import Ranking
 class Game:
-    def __init__(self, player0, player1, nb_line = 6, nb_column = 15):
+    def __init__(self, player0, player1, pts, nb_line = 6, nb_column = 15):
         self.players = [player0, player1]
         self.nb_lines = nb_line
         self.nb_columns = nb_column
@@ -8,6 +9,7 @@ class Game:
         player0.direction = 1
         player1.game = self
         player1.direction = -1
+        self.pts = pts
 
     @property
     def current_player(self):
@@ -78,4 +80,6 @@ class Game:
             self.play_turn()
             self.player_turn += self.current_player.direction
             self.current_player.add_monney()
+        print(f"{self.oponent.name} is the winner!!")
+        Ranking.new_score(self, winner = self.oponent.name, pts = self.pts)
  

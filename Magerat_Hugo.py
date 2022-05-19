@@ -10,7 +10,7 @@ if __name__ == "__main__":
     if choice == 0:
         setting = game_mode()
         
-        while life < 0 or life > 4:
+        while not 0 <= life <= 3:
             try:                    
                 life = int(input(">> "))
                 # break
@@ -27,15 +27,19 @@ if __name__ == "__main__":
         if life == 0:
             print("The winner will recived 1 points")
             life = 20
+            pts = 1
         elif life == 1:
             print("The winner will recived 5 points")
             life = 10
+            pts = 5
         elif life == 2:
             print("The winner will recived 10 points")
             life = 5
+            pts = 10
         elif life == 3:
             print("The winner will recived 20 points")
             life = 1
+            pts = 20
     elif choice == 1:
         setting2 = game_mode()
         while True:
@@ -49,23 +53,28 @@ if __name__ == "__main__":
         
         if life == 0:
             print("If you win, you will recived 1 points")
-            name2 = "bot_nul"
+            name2 = "bot"
             life = 20
+            pts = 1
         elif life == 1:
             print("If you win, you will recived 5 points")
-            name2 = "bot_nul"
+            name2 = "bot"
             life = 10
+            pts = 5
         elif life == 2:
             print("If you win, you will recived 10 points")
             name2 = "bot"
             life = 5
+            pts = 10
         elif life == 3:
             print("If you win, you will recived 20 points")
             name2 = "bot"
             life = 1
+            pts = 20
     elif choice >= 2:
         exit()
+    print(pts)
     p1 = Player(name = name1, life = life, monney = 10)
     p2 = Player(name = name2, life = life, monney = 10)
-    g = Game(p1, p2)
+    g = Game(p1, p2, pts = pts)
     g.play()
