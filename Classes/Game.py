@@ -1,4 +1,4 @@
-from Classes.Ranking import Ranking
+from Function.Ranking import *
 class Game:
     def __init__(self, player0, player1, pts, nb_line = 6, nb_column = 15):
         self.players = [player0, player1]
@@ -81,5 +81,6 @@ class Game:
             self.player_turn += self.current_player.direction
             self.current_player.add_monney()
         print(f"{self.oponent.name} is the winner!!")
-        Ranking.new_score(self, winner = self.oponent.name, pts = self.pts)
+        winner = new_score(self.oponent.name, self.pts)
+        show = show_rank(winner)
  
