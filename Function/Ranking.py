@@ -1,40 +1,22 @@
+from json import *
 def new_score(player, pts):
-    rank = []
-
-    f = open('ranking.txt', 'r+')
-    for i in f:
-        a = i.split(' ')
-        name = a[0]
-        b = a[1]
-        c = b.split("\n")
-        point = c[0]
-        players = (name, point)
-        rank.append(players)
-    f.close()
-    lap = 0
-    for i in rank:
-        if i[0] == player:
-            a = int(i[1])
-            rank.remove(i)
-            point = a+pts
-            winner = (player, str(point))
-            rank.append(winner)
-        else:
-            lap+=1
-
-    if lap == len(rank):
-         winner = (player, pts)
-         rank.append(winner)
-    # rank.sort(key = lambda x: x[1], reverse = True)
-
-
-    f = open('ranking.txt', 'w+')
-    f.truncate(0)
-    for j in rank:
-        name = j[0]
-        pt = j[1]
-        f.write(name + " " + str(pt) + "\n")
-    return rank
+    with open ('data.json', 'r', encoding = 'utf-8') as data_file:
+        data = load(data_file)
+    new = {'playername' : player, 'pts' : pts}
+    for i in data:
+        if i['playername'] == player:            
+            data.remove(i)
+            point = i['pts'] + new['pts']
+            i['pts'] = point
+            data.append(i)
+            with open('data.json', 'w', encoding = 'utf-8') as data_file:
+                dump(data, data_file)
+            exit()
+    data.append(new)
+    with open('data.json', 'w', encoding = 'utf-8') as data_File:
+        dump(data, data_file)
+    
+    print("Updating data... Done")
 
 def show_rank(rank):
     n = 1
