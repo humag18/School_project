@@ -18,11 +18,11 @@ if __name__ == "__main__":
                 print("Oops! That not a valid type try again...")
         name1 = input("Player 1's name >> ")
         if name1 == "bot":
-            name1 = "bots"
+            name1 = "John"
             print(f"Sorry your name is not valid {name1} is your new one")
         name2 = input("Player 2's name >> ")
         if name2 == "bot":
-            name2 = "bots"
+            name2 = "Jack"
             print(f"Sorry your name is not valid {name2} is your new one")
         if life == 0:
             print("The winner will recived 1 points")
