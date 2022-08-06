@@ -1,3 +1,5 @@
+import os
+os.system("colora 0a")
 class Character:
     base_price = 1
     base_life = 5
@@ -69,7 +71,7 @@ class Character:
 
     def color(self, txt):
         if self.player.direction == 1:
-            return "\033[92m]".format(txt)
+            return "033[92m {}\033[00m".format(txt)
         else:
             return "\033[91m {}\033[00m".format(txt)
 
