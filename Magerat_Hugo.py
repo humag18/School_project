@@ -2,6 +2,7 @@ from random import *
 from Classes.Player import Player
 from Classes.Game import Game
 from Function.Function_menu import *
+from Function.Ranking import show_rank
 
 if __name__ == "__main__":
     setting = menu()
@@ -71,7 +72,9 @@ if __name__ == "__main__":
             name2 = "bot"
             life = 1
             pts = 20
-    elif choice >= 2:
+    elif choice == 2:
+        setting3 = show_rank()
+    elif choice >= 3:
         exit()
     print(pts)
     p1 = Player(name = name1, life = life, monney = 10)

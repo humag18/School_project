@@ -14,7 +14,10 @@ def menu():
     txt = "[1] 1 VS bot"
     space = int(44-16-len(txt))
     print("#"+15*" "+txt+space*" "+"#")
-    txt = "[2] quit "
+    txt = "[2] Ranking "
+    space = int(44-16-len(txt))
+    print("#"+15*" "+txt+space*" "+"#")
+    txt = "[3] Quit "
     space = int(44-16-len(txt))
     print("#"+15*" "+txt+space*" "+"#")
     print("#"+nb_columns*"-"+"#")
