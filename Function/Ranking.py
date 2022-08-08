@@ -1,6 +1,6 @@
 from json import *
 def new_score(player, pts):
-    with open ('data.json', 'r', encoding = 'utf-8') as data_file:
+    with open ("data.json", "r", encoding = "utf-8") as data_file:
         data = load(data_file)
     new = {'playername' : player, 'pts' : pts}
     for i in data:
