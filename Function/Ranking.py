@@ -3,20 +3,22 @@ def new_score(player, pts):
     path = "./data.json"
     with open (path, "r", encoding = "utf-8") as data_file:
         data = load(data_file)
-    new = {'playername' : player, 'pts' : pts}
+    data_file.close()
+    new = {'playername' : player.capitalize(), 'pts' : pts}
     for i in data:
-        if i['playername'] == player:            
+        if i['playername'] == player.capitalize():            
             data.remove(i)
             point = i['pts'] + new['pts']
             i['pts'] = point
             data.append(i)
-            with open(path, "w", encoding = 'utf-8') as data_file:
-                dump(data, data_file)
-
+            with open(path, "w", encoding = 'utf-8') as data_file1:
+                dump(data, data_file1)
+            data_file.close()
             exit()
     data.append(new)
-    with open(path, 'w', encoding = 'utf-8') as data_File:
-        dump(data, data_file)
+    with open(path, 'w', encoding = 'utf-8') as data_file2:
+        dump(data, data_file2)
+    data_file.close()
     
     print("Updating data... Done")
 
