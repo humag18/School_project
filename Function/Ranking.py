@@ -25,4 +25,4 @@ def show_rank():
     n = 0
     for i in rank:
         n+=1
-        print("#", n, i['playername'], "with", i["pts"], "points")
+        print(n, "#", i['playername'], "with", i["pts"], "points")
