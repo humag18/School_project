@@ -83,4 +83,3 @@ class Game:
         print(f"{self.oponent.name} is the winner!!")
         winner = new_score(self.oponent.name, self.pts)
         show = show_rank()
-        print(show)
