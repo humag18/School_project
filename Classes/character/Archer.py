@@ -6,7 +6,7 @@ class Archer(Character):
 
     @property
     def design(self):
-            return self.color("M")
+            return self.color("A")
 
     def atac(self):
         if self.position[1] == self.game.nb_columns -2 and self.direction == 1:
